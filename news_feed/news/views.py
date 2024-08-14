@@ -6,18 +6,18 @@ from .models import Feed, LikeDislike
 
 @login_required
 def home(request):
-    recent_feeds = Feed.objects.order_by('-published_at')[:10]  # Fetch the latest 10 feeds
+    recent_feeds = Feed.objects.order_by('-published_at')[:10]  
     return render(request, 'news/home_page.html', {'feeds': recent_feeds})
 
-@login_required  # Ensure the user is logged in to like/dislike
+@login_required  
 @require_POST
 def like_feed(request, pk):
     feed = get_object_or_404(Feed, pk=pk)
     like_dislike, created = LikeDislike.objects.get_or_create(user=request.user, feed=feed)
 
-    if created or like_dislike.like is False:  # If newly created or changing from dislike to like
+    if created or like_dislike.like is False:
         if not created:
-            feed.dislikes -= 1  # Reduce the dislike count
+            feed.dislikes -= 1  
         like_dislike.like = True
         like_dislike.save()
         feed.likes += 1
@@ -26,15 +26,15 @@ def like_feed(request, pk):
     
     return JsonResponse({'success': False, 'message': 'Already liked'})
 
-@login_required  # Ensure the user is logged in to like/dislike
+@login_required  
 @require_POST
 def dislike_feed(request, pk):
     feed = get_object_or_404(Feed, pk=pk)
     like_dislike, created = LikeDislike.objects.get_or_create(user=request.user, feed=feed)
 
-    if created or like_dislike.like is True:  # If newly created or changing from like to dislike
+    if created or like_dislike.like is True:  
         if not created:
-            feed.likes -= 1  # Reduce the like count
+            feed.likes -= 1  
         like_dislike.like = False
         like_dislike.save()
         feed.dislikes += 1
@@ -50,7 +50,3 @@ def feed_detail(request, pk):
 
     return render(request, 'news/feed_detail.html', {'feed': feed})
 
-@login_required
-def liked_feeds(request):
-    liked_feeds = Feed.objects.filter(likedislike__user=request.user, likedislike__like=True)
-    return render(request, 'news/liked_feeds.html', {'feeds': liked_feeds})

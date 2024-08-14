@@ -8,7 +8,6 @@ urlpatterns = [
     path('feed/<int:pk>/', views.feed_detail, name='feed_detail'),
     path('feed/<int:pk>/like/', views.like_feed, name='like_feed'),
     path('feed/<int:pk>/dislike/', views.dislike_feed, name='dislike_feed'),
-    path('liked-feeds/', views.liked_feeds, name='liked_feeds'),
 ]
 
 if settings.DEBUG:

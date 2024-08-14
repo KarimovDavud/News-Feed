@@ -9,7 +9,7 @@ class Feed(models.Model):
     view_count = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
-    image = models.ImageField(upload_to='feed_images/', null=True, blank=True)  # Resim alanı
+    image = models.ImageField(upload_to='feed_images/', null=True, blank=True)  
 
     def __str__(self):
         return self.title
@@ -17,7 +17,7 @@ class Feed(models.Model):
 class LikeDislike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
-    like = models.BooleanField()  # True for like, False for dislike
+    like = models.BooleanField()  
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

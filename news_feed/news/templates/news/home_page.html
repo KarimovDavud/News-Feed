@@ -37,7 +37,7 @@
             likeButtons.forEach(button => {
                 button.addEventListener("click", function() {
                     const feedId = this.getAttribute("data-feed-id");
-                    // İstifadəçi əvvəllər bəyənməyibsə bəyənməyə icazə ver
+                    
                     if (!localStorage.getItem(`liked-${feedId}`)) {
                         const likeCountElement = this.querySelector(".like-count");
                         let likeCount = parseInt(likeCountElement.textContent);
@@ -45,7 +45,7 @@
                         likeCountElement.textContent = likeCount;
                         localStorage.setItem(`liked-${feedId}`, true);
 
-                        // Əgər əvvəllər bəyənməyibsə, onu sil
+                        
                         if (localStorage.getItem(`disliked-${feedId}`)) {
                             const dislikeCountElement = this.closest(".feed-card").querySelector(".dislike-count");
                             let dislikeCount = parseInt(dislikeCountElement.textContent);
@@ -60,7 +60,7 @@
             dislikeButtons.forEach(button => {
                 button.addEventListener("click", function() {
                     const feedId = this.getAttribute("data-feed-id");
-                    // İstifadəçi əvvəllər bəyənibsə bəyənməməyə icazə ver
+                    
                     if (!localStorage.getItem(`disliked-${feedId}`)) {
                         const dislikeCountElement = this.querySelector(".dislike-count");
                         let dislikeCount = parseInt(dislikeCountElement.textContent);
@@ -68,7 +68,7 @@
                         dislikeCountElement.textContent = dislikeCount;
                         localStorage.setItem(`disliked-${feedId}`, true);
 
-                        // Əgər əvvəllər bəyənibsə, onu sil
+                    
                         if (localStorage.getItem(`liked-${feedId}`)) {
                             const likeCountElement = this.closest(".feed-card").querySelector(".like-count");
                             let likeCount = parseInt(likeCountElement.textContent);
