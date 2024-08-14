@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'news/home_page.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Recent Feeds</h1>
+        <div class="feed-row">
+            {% for feed in feeds %}
+                <div class="feed-card">
+                    {% if feed.image %}
+                        <img src="{{ feed.image.url }}" alt="{{ feed.title }}" class="news-image">
+                    {% endif %}
+                    <h2>{{ feed.title }}</h2>
+                    <p>{{ feed.published_at }}</p>
+                    <p>{{ feed.body|truncatewords:30 }}</p>
+                    <a href="{% url 'feed_detail' feed.pk %}" class="read-more">Read More</a>
+                    <div class="like-dislike">
+                        <button class="like-button" data-feed-id="{{ feed.pk }}">Like <span class="like-count">0</span></button>
+                        <button class="dislike-button" data-feed-id="{{ feed.pk }}">Dislike <span class="dislike-count">0</span></button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const likeButtons = document.querySelectorAll(".like-button");
+            const dislikeButtons = document.querySelectorAll(".dislike-button");
+
+            likeButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    const feedId = this.getAttribute("data-feed-id");
+                    // İstifadəçi əvvəllər bəyənməyibsə bəyənməyə icazə ver
+                    if (!localStorage.getItem(`liked-${feedId}`)) {
+                        const likeCountElement = this.querySelector(".like-count");
+                        let likeCount = parseInt(likeCountElement.textContent);
+                        likeCount++;
+                        likeCountElement.textContent = likeCount;
+                        localStorage.setItem(`liked-${feedId}`, true);
+
+                        // Əgər əvvəllər bəyənməyibsə, onu sil
+                        if (localStorage.getItem(`disliked-${feedId}`)) {
+                            const dislikeCountElement = this.closest(".feed-card").querySelector(".dislike-count");
+                            let dislikeCount = parseInt(dislikeCountElement.textContent);
+                            dislikeCount = Math.max(0, dislikeCount - 1);
+                            dislikeCountElement.textContent = dislikeCount;
+                            localStorage.removeItem(`disliked-${feedId}`);
+                        }
+                    }
+                });
+            });
+
+            dislikeButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    const feedId = this.getAttribute("data-feed-id");
+                    // İstifadəçi əvvəllər bəyənibsə bəyənməməyə icazə ver
+                    if (!localStorage.getItem(`disliked-${feedId}`)) {
+                        const dislikeCountElement = this.querySelector(".dislike-count");
+                        let dislikeCount = parseInt(dislikeCountElement.textContent);
+                        dislikeCount++;
+                        dislikeCountElement.textContent = dislikeCount;
+                        localStorage.setItem(`disliked-${feedId}`, true);
+
+                        // Əgər əvvəllər bəyənibsə, onu sil
+                        if (localStorage.getItem(`liked-${feedId}`)) {
+                            const likeCountElement = this.closest(".feed-card").querySelector(".like-count");
+                            let likeCount = parseInt(likeCountElement.textContent);
+                            likeCount = Math.max(0, likeCount - 1);
+                            likeCountElement.textContent = likeCount;
+                            localStorage.removeItem(`liked-${feedId}`);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

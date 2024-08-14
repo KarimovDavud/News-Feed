@@ -1,0 +1,98 @@
+/* Ana stil */
+.container {
+    width: 100%;
+    padding: 20px;
+}
+
+/* Kartların satır halinde gösterimi */
+.feed-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Soldan sağa doğru hizalama */
+}
+
+/* Kart stilini küçültme */
+.feed-card {
+    width: 250px;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    transition: transform 0.2s;
+}
+
+.feed-card:hover {
+    transform: scale(1.05);
+}
+
+/* Resim stilini küçültme */
+.news-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Başlık */
+.feed-card h2 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Tarih ve metin */
+.feed-card p {
+    font-size: 12px;
+    color: #666;
+    margin: 5px 0;
+}
+
+/* Okuma bağlantısı */
+.read-more {
+    font-size: 14px;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+.youtube-link {
+    display: block;
+    font-size: 14px;
+    color: #FF0000;
+    margin: 10px 0;
+    text-decoration: none;
+}
+
+.youtube-link:hover {
+    text-decoration: underline;
+}
+
+/* Bəyənmə və bəyənməmə düymələri stili */
+.like-dislike {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.like-button, .dislike-button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+.like-button:hover, .dislike-button:hover {
+    background-color: #e0e0e0;
+}
+
+.like-count, .dislike-count {
+    margin-left: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}

@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ feed.title }}</title>
+    <link rel="stylesheet" href="{% static 'news/feed_detail.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    {% if feed.image %}
+        <img src="{{ feed.image.url }}" alt="{{ feed.title }}" class="news-image">
+    {% endif %}
+
+    <h1>{{ feed.title }}</h1>
+    <p>{{ feed.published_at }}</p>
+    <p>{{ feed.body }}</p>
+
+    {% if feed.youtube_video_url %}
+        <p><a href="{{ feed.youtube_video_url }}" target="_blank" class="youtube-link">Watch on YouTube</a></p>
+    {% endif %}
+
+    <p>Views: {{ feed.view_count }}</p>
+
+    <div class="feedback-container">
+        <button class="feedback-button like-button">
+            <i class="fa fa-thumbs-up"></i> 
+            <span id="like-count">{{ feed.likes }}</span>
+        </button>
+        <button class="feedback-button dislike-button">
+            <i class="fa fa-thumbs-down"></i> 
+            <span id="dislike-count">{{ feed.dislikes }}</span>
+        </button>
+    </div>
+
+    <script>
+        function handleFeedback(action) {
+            fetch({% url "feed_detail" feed.pk %}/${action}/, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('like-count').textContent = data.likes;
+                    document.getElementById('dislike-count').textContent = data.dislikes;
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        document.querySelector('.like-button').addEventListener('click', function() {
+            handleFeedback('like');
+        });
+
+        document.querySelector('.dislike-button').addEventListener('click', function() {
+            handleFeedback('dislike');
+        });
+    </script>
+</body>
+</html>

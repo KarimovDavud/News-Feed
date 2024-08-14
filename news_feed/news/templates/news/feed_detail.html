@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ feed.title }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'news/feed_detail.css' %}">
+</head>
+<body>
+    <div class="news-card">
+        {% if feed.image %}
+            <img src="{{ feed.image.url }}" alt="{{ feed.title }}" class="news-image">
+        {% endif %}
+
+        <div class="news-info">
+            <div class="news-meta">
+                <span class="news-date">{{ feed.published_at }}</span>
+                <span class="news-views"><i class="fa fa-eye"></i> {{ feed.view_count }}</span>
+            </div>
+            <h2 class="news-title">{{ feed.title }}</h2>
+            <p>{{ feed.body }}</p>
+
+            {% if feed.youtube_video_url %}
+                <p><a href="{{ feed.youtube_video_url }}" target="_blank" class="youtube-link">Watch on YouTube</a></p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Ana Səhifə Keçidi -->
+    <div class="home-button-container">
+        <a href="{% url 'home' %}" class="home-button">Ana Səhifə</a>
+    </div>
+</body>
+</html>
